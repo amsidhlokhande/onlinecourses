@@ -1,0 +1,140 @@
+<section class="dashboard-wrap mtb-40">
+    <div class="container">
+        <div class="body-content">
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="dash-left">
+                        <ul>
+                            <li class="active"><a routerLink="/dashboard" routerLinkActive="active"
+                                    class="nav-link">Dashboard</a></li>
+                            <a routerLink="/post" routerLinkActive="active" class="nav-link">Posts</a>
+                            <li><a href="#">Courses</a></li>
+                            <li><a href="#">Pages</a></li>
+                            <li><a href="#">Logout</a></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="col-md-9" *ngIf="!showGrid">
+                    {{regForm.valid}}
+                    <div class="dash-right">
+                        <div class="dash-header">
+                            <div class="dash-title">
+                                <h1>Create Post</h1>
+                            </div>
+                            <div class="alert alert-success" *ngIf="datasaved">
+                                {{message}}
+                            </div>
+                        </div>
+
+                        <div class="blog-form">
+                            <form (ngSubmit)="onSubmit()" [formGroup]="regForm">
+                                <div class="form-group form-row">
+                                    <label class="col-md-3">Title<span class="required">*</span></label>
+                                    <div class="col-md-9">
+                                        <input type="text" formControlName="title" class="form-control"
+                                            placeholder="Title" required>
+                                        <span
+                                            *ngIf="!regForm.get('title')?.valid && regForm.get('title')?.touched">Please
+                                            enter title</span>
+                                    </div>
+                                </div>
+
+                                <div class="form-group form-row">
+                                    <label class="col-md-3">Short Description<span class="required">*</span></label>
+                                    <div class="col-md-9">
+                                        <input type="text" formControlName="shortDescription" class="form-control"
+                                            placeholder="ShortDescription" required>
+                                        <span
+                                            *ngIf="!regForm.get('shortDescription')?.valid && regForm.get('shortDescription')?.touched">Please
+                                            enter short description</span>
+                                    </div>
+                                </div>
+
+                                <div class="form-group form-row">
+                                    <label class="col-md-3">Full Description<span class="required">*</span></label>
+                                    <div class="col-md-9">
+                                        <input type="text" formControlName="fullDescription" class="form-control"
+                                            placeholder="FullDescription" required>
+                                        <span
+                                            *ngIf="!regForm.get('fullDescription')?.valid && regForm.get('fullDescription')?.touched">Please
+                                            enter full description</span>
+                                    </div>
+                                </div>
+
+                                <div class="form-group form-row">
+                                    <label class="col-md-3">Author<span class="required">*</span></label>
+                                    <div class="col-md-9">
+                                        <input type="text" formControlName="author" class="form-control"
+                                            placeholder="Author" required rows="5">
+                                        <span
+                                            *ngIf="!regForm.get('author')?.valid && regForm.get('author')?.touched">Please
+                                            enter Author</span>
+                                    </div>
+                                </div>
+
+                                <div class="form-group form-row">
+                                    <label class="col-md-3">Upload Image<span class="required">*</span></label>
+                                    <div class="col-md-9">
+                                        <input type="file" #imageUrl accept="image/*"
+                                            (change)="handleFileInput($event)" required>
+                                        <img width="100px" height="100px" src="{{postImage}}">
+                                    </div>
+                                </div>
+
+
+                                <div class="form-group form-row">
+                                    <label class="col-md-3"></label>
+                                    <div class="col-md-9">
+                                        <button type="submit" class="btn btn-primary"
+                                            [disabled]="!regForm.valid">Save</button>
+                                        <button type="button" class="btn btn-danger" (click)="cancel()">Cancel</button>
+                                    </div>
+                                </div>
+
+
+                            </form>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="col-md-9" *ngIf="showGrid">
+                    <div class="dash-right">
+                        <div class="dash-header">
+                            <div class="dash-title">
+                                <h1>{{title}}</h1>
+                            </div>
+                            <div class="dash-nav">
+                                <a [routerLink]="" (click)="addPost()" class="btn btn-success">Add Post</a>
+                            </div>
+                        </div>
+                        <table class="table table-bordered table-striped">
+                            <tr>
+                                <th>#ID</th>
+                                <th>Image</th>
+                                <th>Title</th>
+                                <th>Created At</th>
+                                <th>Update At</th>
+                                <th>Action</th>
+                            </tr>
+                            <tr *ngFor="let post of posts | async">
+                                <td>{{post.courseId}}</td>
+                                <td><img src="../../../assets/images/{{post.imageUrl}}"></td>
+                                <td>{{post.title}}</td>
+                                <td>{{post.createDate | date: 'fullDate'}}</td>
+                                <td>{{post.modifyDate | date: 'fullDate'}}</td>
+                                <td class="action">
+                                    <a [routerLink]="" (click)="editPost(post.courseId)"
+                                        class="btn btn-info btn-sm">Edit</a>
+                                    <a [routerLink]="" (click)="onDelete(post.courseId)" class="btn btn-danger btn-sm">Delete</a>
+                                </td>
+                            </tr>
+                        </table>
+                        {{error}}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
